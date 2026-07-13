@@ -1,4 +1,4 @@
-# Wire — 1-on-1 private chat
+# WaveChat — 1-on-1 private chat
 
 A full-stack real-time messaging app, structured for production use:
 layered backend (routes → controllers → services → repositories),

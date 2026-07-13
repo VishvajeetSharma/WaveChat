@@ -23,7 +23,7 @@ export default function ChatPage() {
     <div className="app-shell">
       <div className="sidebar">
         <div className="sidebar-header">
-          <h1 className="auth-mark">Wire</h1>
+          <h1 className="auth-mark">WaveChat</h1>
           <div className="me-row">
             <span className="me-username">{user.username}</span>
             <button className="logout-btn" onClick={logout}>

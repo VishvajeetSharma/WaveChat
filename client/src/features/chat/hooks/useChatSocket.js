@@ -46,7 +46,7 @@ export function useChatSocket(currentUserId) {
     };
   }, [activeId]);
 
-  // Wire up live Socket.IO events once.
+  // WaveChat up live Socket.IO events once.
   useEffect(() => {
     const socket = getSocket();
     if (!socket) return;

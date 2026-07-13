@@ -23,7 +23,7 @@ export default function SignupPage() {
   return (
     <div className="auth-shell">
       <div className="auth-card">
-        <h1 className="auth-mark">Wire</h1>
+        <h1 className="auth-mark">WaveChat</h1>
         <p className="auth-tagline">Private messaging, line by line</p>
 
         {error && <div className="form-error">{error}</div>}

@@ -49,7 +49,7 @@ export default function Conversation({
   if (!contact) {
     return (
       <div className="no-conversation">
-        <h2 className="auth-mark">Wire</h2>
+        <h2 className="auth-mark">WaveChat</h2>
         <p>Pick someone from the list to start a conversation.</p>
       </div>
     );
