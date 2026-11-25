@@ -28,4 +28,8 @@ export function isOnline(userId) {
   return onlineUsers.has(userId);
 }
 
-export default { markOnline, markOffline, isOnline };
+export function getOnlineUserIds() {
+  return Array.from(onlineUsers.keys());
+}
+
+export default { markOnline, markOffline, isOnline, getOnlineUserIds };

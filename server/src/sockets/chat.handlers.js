@@ -1,14 +1,19 @@
 import messagesService from "../modules/messages/messages.service.js";
 import usersRepository from "../modules/users/users.repository.js";
 import logger from "../utils/logger.js";
-import { markOnline, markOffline } from "./presence.js";
+import { markOnline, markOffline, getOnlineUserIds } from "./presence.js";
 
 export function registerChatHandlers(io, socket) {
   const { id: userId, username } = socket.user;
 
   socket.join(`user:${userId}`);
   markOnline(userId, socket.id);
+  socket.emit("presence:snapshot", { userIds: getOnlineUserIds() });
   io.emit("presence:update", { userId, online: true });
+
+  socket.on("presence:get", () => {
+    socket.emit("presence:snapshot", { userIds: getOnlineUserIds() });
+  });
 
   socket.on("message:send", async ({ receiverId, body }, ack) => {
     try {

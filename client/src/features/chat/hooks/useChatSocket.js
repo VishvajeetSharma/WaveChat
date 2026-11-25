@@ -88,19 +88,34 @@ export function useChatSocket(currentUserId) {
       });
     };
 
+    const handlePresenceSnapshot = ({ userIds }) => {
+      if (!Array.isArray(userIds)) return;
+      setOnlineIds(new Set(userIds));
+    };
+
     const handleTyping = ({ userId, isTyping }) => {
       if (activeIdRef.current !== userId) return;
       setTypingFrom(isTyping ? userId : null);
     };
 
+    const handleConnect = () => {
+      socket.emit("presence:get");
+    };
+
     socket.on("message:new", handleNewMessage);
     socket.on("presence:update", handlePresence);
+    socket.on("presence:snapshot", handlePresenceSnapshot);
     socket.on("message:typing", handleTyping);
+    socket.on("connect", handleConnect);
+
+    if (socket.connected) handleConnect();
 
     return () => {
       socket.off("message:new", handleNewMessage);
       socket.off("presence:update", handlePresence);
+      socket.off("presence:snapshot", handlePresenceSnapshot);
       socket.off("message:typing", handleTyping);
+      socket.off("connect", handleConnect);
     };
   }, [currentUserId]);
 
