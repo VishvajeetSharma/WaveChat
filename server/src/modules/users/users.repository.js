@@ -42,13 +42,16 @@ export const usersRepository = {
          u.id,
          u.username,
          u.last_seen_at,
-         lm.body        AS last_message_body,
-         lm.created_at  AS last_message_at,
-         lm.sender_id   AS last_message_sender_id,
+         lm.id           AS last_message_id,
+         lm.body         AS last_message_body,
+         lm.created_at   AS last_message_at,
+         lm.sender_id    AS last_message_sender_id,
+         lm.delivered_at AS last_message_delivered_at,
+         lm.read_at      AS last_message_read_at,
          COALESCE(unread.count, 0) AS unread_count
        FROM users u
        LEFT JOIN LATERAL (
-         SELECT body, created_at, sender_id
+         SELECT id, body, created_at, sender_id, delivered_at, read_at
          FROM messages
          WHERE (sender_id = u.id AND receiver_id = $1)
             OR (sender_id = $1 AND receiver_id = u.id)

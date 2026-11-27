@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import WaveMark from "../../../shared/components/WaveMark.jsx";
+import ThemeToggle from "../../../shared/components/ThemeToggle.jsx";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -22,8 +24,12 @@ export default function LoginPage() {
 
   return (
     <div className="auth-shell">
+      <ThemeToggle className="theme-toggle-floating" />
       <div className="auth-card">
-        <h1 className="auth-mark">WaveChat</h1>
+        <div className="brand brand-lg">
+          <WaveMark size={40} />
+          <h1 className="wordmark wordmark-lg">WaveChat</h1>
+        </div>
         <p className="auth-tagline">Private messaging, line by line</p>
 
         {error && <div className="form-error">{error}</div>}

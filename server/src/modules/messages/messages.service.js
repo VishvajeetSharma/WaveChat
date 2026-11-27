@@ -12,9 +12,10 @@ export const messagesService = {
       limit,
     });
 
-    // Viewing the conversation marks the other person's messages as read.
-    await messagesRepository.markRead({ senderId: otherUserId, receiverId: currentUserId });
-
+    // NOTE: loading history deliberately does NOT mark messages as seen.
+    // "Seen" is reported over the socket (message:read) so the sender can be
+    // notified in real time; the client emits it once the chat is actually
+    // on screen.
     return messages;
   },
 
@@ -37,8 +38,18 @@ export const messagesService = {
     return messagesRepository.create({ senderId, receiverId, body: trimmed });
   },
 
+  /** @returns {Promise<{id:number, read_at:string}[]>} messages that just turned "seen" */
   async markConversationRead({ senderId, receiverId }) {
-    await messagesRepository.markRead({ senderId, receiverId });
+    return messagesRepository.markRead({ senderId, receiverId });
+  },
+
+  async markDelivered(messageId) {
+    return messagesRepository.markDelivered(messageId);
+  },
+
+  /** @returns {Promise<{id:number, sender_id:number, delivered_at:string}[]>} */
+  async markAllDeliveredTo(receiverId) {
+    return messagesRepository.markAllDelivered(receiverId);
   },
 };
 

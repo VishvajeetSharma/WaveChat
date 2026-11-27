@@ -13,7 +13,7 @@ async function main() {
   const httpServer = http.createServer(app);
   initSocketServer(httpServer);
 
-  httpServer.listen(config.port, () => {
+  httpServer.listen(config.port, "0.0.0.0", () => {
     logger.info(`Server listening on http://localhost:${config.port} [${config.nodeEnv}]`);
   });
 

@@ -2,6 +2,9 @@ import { useAuth } from "../../auth/context/AuthContext.jsx";
 import useChatSocket from "../hooks/useChatSocket.js";
 import ContactList from "../components/ContactList.jsx";
 import Conversation from "../components/Conversation.jsx";
+import Avatar from "../../../shared/components/Avatar.jsx";
+import WaveMark from "../../../shared/components/WaveMark.jsx";
+import ThemeToggle from "../../../shared/components/ThemeToggle.jsx";
 
 export default function ChatPage() {
   const { user, logout } = useAuth();
@@ -14,23 +17,32 @@ export default function ChatPage() {
     onlineIds,
     isTypingFromActive,
     sendMessage,
+    retryMessage,
     setTyping,
   } = useChatSocket(user.id);
 
   const activeContact = contacts.find((c) => c.id === activeId) || null;
 
   return (
-    <div className="app-shell">
+    // On narrow screens only one pane shows at a time: `in-chat` swaps the list for the chat.
+    <div className={`app-shell${activeContact ? " in-chat" : ""}`}>
       <div className="sidebar">
         <div className="sidebar-header">
-          <h1 className="auth-mark">WaveChat</h1>
-          <div className="me-row">
-            <span className="me-username">{user.username}</span>
-            <button className="logout-btn" onClick={logout}>
-              Sign out
-            </button>
+          <div className="brand">
+            <WaveMark size={30} />
+            <h1 className="wordmark">WaveChat</h1>
           </div>
+          <ThemeToggle />
         </div>
+
+        <div className="me-row">
+          <Avatar name={user.username} size="sm" />
+          <span className="me-username">{user.username}</span>
+          <button className="logout-btn" onClick={logout}>
+            Sign out
+          </button>
+        </div>
+
         {!loadingContacts && (
           <ContactList
             contacts={contacts}
@@ -48,7 +60,9 @@ export default function ChatPage() {
         online={onlineIds.has(activeId)}
         typing={isTypingFromActive}
         onSend={sendMessage}
+        onRetry={retryMessage}
         onTyping={setTyping}
+        onBack={() => setActiveId(null)}
       />
     </div>
   );

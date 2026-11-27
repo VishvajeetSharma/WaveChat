@@ -122,6 +122,35 @@ don't ship the default in production.
 - `message:send` persists via `messages.service` → `messages.repository`,
   then emits `message:new` to both the sender's and receiver's rooms.
 - `message:typing` and `presence:update` are ephemeral, not persisted.
+
+### Message receipts (ticks)
+
+A message you sent is in one of these states, derived from two columns on
+`messages` (`delivered_at`, `read_at`):
+
+| State     | Tick            | When                                                        |
+| --------- | --------------- | ----------------------------------------------------------- |
+| sending   | clock           | optimistic bubble, server has not acknowledged yet          |
+| sent      | one grey tick   | saved on the server                                         |
+| delivered | two grey ticks  | receiver had a live connection (now, or when they next connect) |
+| seen      | two blue ticks  | receiver opened the chat while the tab was visible          |
+
+- `message:send` accepts an optional `clientId`; it is echoed back on
+  `message:new` / the ack so the optimistic bubble is replaced in place.
+- `message:delivered` `{ by, ids, deliveredAt }` is sent to senders when a
+  user connects and picks up messages that were waiting for them.
+- `message:read` `{ by, ids, readAt }` is sent to the sender when the receiver
+  opens the conversation. Loading history over HTTP does **not** mark messages
+  as seen; only the socket event does.
+- Migration `002_message_delivery.sql` adds `delivered_at`. Run
+  `npm run migrate` in `server/` after pulling.
+
+### Theme
+
+`<html data-theme="dark|light">` switches the palette defined at the top of
+`client/src/styles/global.css`. The choice is saved in `localStorage`
+(`wavechat_theme`); with no saved choice the OS preference is used. An inline
+script in `index.html` applies it before first paint to avoid a flash.
 - Presence is tracked in-memory (`sockets/presence.js`); if you scale to
   multiple server instances, swap this for a shared store (e.g. Redis)
   and add the `socket.io-redis` adapter so rooms/broadcasts work across

@@ -1,4 +1,6 @@
-import { initials, formatContactTimestamp } from "../../../shared/utils/date.js";
+import { formatContactTimestamp } from "../../../shared/utils/date.js";
+import Avatar from "../../../shared/components/Avatar.jsx";
+import MessageStatus, { getMessageStatus } from "./MessageStatus.jsx";
 
 export default function ContactList({ contacts, activeId, onSelect, onlineIds }) {
   if (contacts.length === 0) {
@@ -14,19 +16,25 @@ export default function ContactList({ contacts, activeId, onSelect, onlineIds })
     <div className="contact-list">
       {contacts.map((c) => {
         const online = onlineIds.has(c.id);
-        const preview = c.last_message_body
-          ? `${c.last_message_sender_id !== c.id ? "You: " : ""}${c.last_message_body}`
-          : "No messages yet";
+        const hasMessage = Boolean(c.last_message_body);
+        const lastIsMine = hasMessage && c.last_message_sender_id !== c.id;
+        const unread = c.unread_count > 0;
+
         return (
           <div
             key={c.id}
-            className={`contact${activeId === c.id ? " active" : ""}`}
+            className={`contact${activeId === c.id ? " active" : ""}${unread ? " has-unread" : ""}`}
             onClick={() => onSelect(c.id)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect(c.id);
+              }
+            }}
           >
-            <div className="avatar">
-              {initials(c.username)}
-              <span className={`seal${online ? " online" : ""}`} />
-            </div>
+            <Avatar name={c.username} online={online} />
             <div className="contact-info">
               <div className="contact-name-row">
                 <span className="contact-name">{c.username}</span>
@@ -34,11 +42,21 @@ export default function ContactList({ contacts, activeId, onSelect, onlineIds })
                   {formatContactTimestamp(c.last_message_at)}
                 </span>
               </div>
-              <div className="contact-preview">{preview}</div>
+              <div className="contact-preview-row">
+                {lastIsMine && (
+                  <MessageStatus
+                    status={getMessageStatus({
+                      delivered_at: c.last_message_delivered_at,
+                      read_at: c.last_message_read_at,
+                    })}
+                  />
+                )}
+                <span className="contact-preview">
+                  {hasMessage ? c.last_message_body : "No messages yet"}
+                </span>
+                {unread && <span className="unread-badge">{c.unread_count}</span>}
+              </div>
             </div>
-            {c.unread_count > 0 && (
-              <span className="unread-badge">{c.unread_count}</span>
-            )}
           </div>
         );
       })}
