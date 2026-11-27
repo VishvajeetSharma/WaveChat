@@ -465,6 +465,27 @@ body,
   scrollbar-color: var(--border) transparent;
 }
 
+.site-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  color: var(--text-faint);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.site-footer a {
+  color: var(--accent-fg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
 .contact {
   display: flex;
   align-items: center;

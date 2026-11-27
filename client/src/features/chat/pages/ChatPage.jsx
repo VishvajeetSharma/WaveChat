@@ -5,6 +5,7 @@ import Conversation from "../components/Conversation.jsx";
 import Avatar from "../../../shared/components/Avatar.jsx";
 import WaveMark from "../../../shared/components/WaveMark.jsx";
 import ThemeToggle from "../../../shared/components/ThemeToggle.jsx";
+import Footer from "../../../shared/components/Footer.jsx";
 
 export default function ChatPage() {
   const { user, logout } = useAuth();
@@ -50,6 +51,7 @@ export default function ChatPage() {
             onlineIds={onlineIds}
           />
         )}
+        <Footer />
       </div>
 
       <Conversation
