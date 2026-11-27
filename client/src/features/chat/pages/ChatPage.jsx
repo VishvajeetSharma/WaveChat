@@ -35,14 +35,6 @@ export default function ChatPage() {
           <ThemeToggle />
         </div>
 
-        <div className="me-row">
-          <Avatar name={user.username} size="sm" />
-          <span className="me-username">{user.username}</span>
-          <button className="logout-btn" onClick={logout}>
-            Sign out
-          </button>
-        </div>
-
         {!loadingContacts && (
           <ContactList
             contacts={contacts}
@@ -51,7 +43,19 @@ export default function ChatPage() {
             onlineIds={onlineIds}
           />
         )}
-        <Footer />
+        <div className="sidebar-bottom">
+          <div className="me-row">
+            <Avatar name={user.username} size="sm" />
+            <div className="me-details">
+              <span className="me-label">Signed in as</span>
+              <span className="me-username">{user.username}</span>
+            </div>
+            <button className="logout-btn" onClick={logout}>
+              Sign out
+            </button>
+          </div>
+          <Footer />
+        </div>
       </div>
 
       <Conversation
