@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import WaveMark from "../../../shared/components/WaveMark.jsx";
 import ThemeToggle from "../../../shared/components/ThemeToggle.jsx";
+import PasswordInput from "../../../shared/components/PasswordInput.jsx";
 
 export default function SignupPage() {
   const { signup } = useAuth();
@@ -48,14 +49,12 @@ export default function SignupPage() {
           </div>
           <div className="field">
             <label htmlFor="password">Password</label>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="8+ characters"
-              required
             />
           </div>
           <button className="btn-primary" type="submit" disabled={loading}>

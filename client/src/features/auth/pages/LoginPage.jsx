@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import WaveMark from "../../../shared/components/WaveMark.jsx";
 import ThemeToggle from "../../../shared/components/ThemeToggle.jsx";
+import PasswordInput from "../../../shared/components/PasswordInput.jsx";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -47,13 +48,11 @@ export default function LoginPage() {
           </div>
           <div className="field">
             <label htmlFor="password">Password</label>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </div>
           <button className="btn-primary" type="submit" disabled={loading}>
