@@ -69,8 +69,7 @@ export default function Conversation({
   if (!contact) {
     return (
       <div className="no-conversation">
-        <WaveMark size={56} />
-        <h2 className="wordmark wordmark-lg">WaveChat</h2>
+        <WaveMark full size={260} />
         <p>Pick someone from the list to start a conversation.</p>
       </div>
     );

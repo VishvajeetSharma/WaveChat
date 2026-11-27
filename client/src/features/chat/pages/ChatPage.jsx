@@ -29,8 +29,7 @@ export default function ChatPage() {
       <div className="sidebar">
         <div className="sidebar-header">
           <div className="brand">
-            <WaveMark size={30} />
-            <h1 className="wordmark">WaveChat</h1>
+            <WaveMark full size={170} />
           </div>
           <ThemeToggle />
         </div>

@@ -27,8 +27,7 @@ export default function SignupPage() {
       <ThemeToggle className="theme-toggle-floating" />
       <div className="auth-card">
         <div className="brand brand-lg">
-          <WaveMark size={40} />
-          <h1 className="wordmark wordmark-lg">WaveChat</h1>
+          <WaveMark full size={260} />
         </div>
         <p className="auth-tagline">Private messaging, line by line</p>
 
